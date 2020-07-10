@@ -1,4 +1,4 @@
-# number-verifier
+# Number Verifier - Simple, free SMS verification tool
 ![number verifier demo](demo.gif)
 
 Number Verifier is a **SMS verification tool** that makes it easy to get a disposable SMS number and bypass SMS number verifications on any site, for example Facebook, Discord, Twitter, Uber, WeChat, Google & more.
@@ -7,6 +7,9 @@ Number Verifier is a **SMS verification tool** that makes it easy to get a dispo
 - Support for multiple free SMS providers (**PRs are open!**)
 - Automatically refreshing of latest messages (5s delay)
 - Easy switching between providers
+
+## Usage
+To use this tool first download the [latest release](https://github.com/upmasked/number-verifier/releases/latest). If you're using Windows/Mac (darwin)/Linux, and not sure which one to select, you'll probably want to choose the **'amd64'** (=64-bit) variant. After that, extract the package and run it.
 
 ## Providers
 We currently support the following providers:
