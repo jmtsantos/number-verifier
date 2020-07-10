@@ -1,4 +1,3 @@
-
 package main
 
 import (
@@ -62,6 +61,8 @@ func getProvider(selectedProvider *string) providers.Providers {
 	switch *selectedProvider {
 	case "smsreceivefree":
 		provider = providers.SMSReceiveFree{}
+	case "upmasked":
+		provider = providers.Upmasked{}
 	default:
 		fmt.Println("Provider '" + *selectedProvider + "' not found, falling back to default provider SMSReceiveFree")
 		provider = providers.SMSReceiveFree{}
