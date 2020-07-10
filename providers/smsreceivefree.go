@@ -39,11 +39,17 @@ func (p SMSReceiveFree) GetMessages(number string) ([]string, error) {
 		return nil, err
 	}
 
+	re := regexp.MustCompile(`\r?\n`)
 	doc.Find(".messagesTable tr").EachWithBreak(func(i int, s *goquery.Selection) bool {
 		message := ""
 
 		s.Find("td").Each(func(i int, s *goquery.Selection) {
-			message += strings.TrimSpace(s.Text()) + " - "
+			cleanMessage := re.ReplaceAllString(s.Text(), " ")
+			message += strings.TrimSpace(cleanMessage) + " "
+
+			if s.Size() + 1  != i {
+				message += "- "
+			}
 		})
 
 		messages = append(messages, message)
