@@ -24,6 +24,7 @@ Messages are stored for up to 7 days.
 - [ ] Allow easy switching between numbers
 - [ ] Make amount of messsages shown a parameter
 - [ ] Improve message list output
+- [ ] Add native TOR support for SMS providers
 
 ## Disclaimer
 Using this software to violate the terms and conditions of any third-party service is strictly against the intent of this software. By using this software, you are acknowledging this fact and absolving the author or any potential liability or wrongdoing it may cause. This software is meant for testing and experimental purposes only, so please act responsibly.
