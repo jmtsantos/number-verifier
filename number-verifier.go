@@ -40,8 +40,9 @@ func main() {
 
 	writer := uilive.New()
 	writer.Start()
+	defer writer.Stop()
 
-	for true {
+	for {
 		messages, err = provider.GetMessages(number)
 		if err != nil {
 			fmt.Println("error getting messages: " + err.Error())
@@ -54,8 +55,6 @@ func main() {
 
 		time.Sleep(time.Second * 5)
 	}
-
-	writer.Stop()
 }
 
 // getProvider selects a provider based on the input string.

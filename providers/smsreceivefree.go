@@ -53,11 +53,7 @@ func (p SMSReceiveFree) GetMessages(number string) ([]string, error) {
 		})
 
 		messages = append(messages, message)
-		if len(messages) > 5 {
-			return false
-		}
-
-		return true
+		return len(messages) <= 5
 	})
 
 	return messages, nil
