@@ -11,7 +11,7 @@ import (
 
 func main() {
 	var (
-		selectedProvider = flag.String("provider", "smsreceivefree", "a string")
+		selectedProvider = flag.String("provider", "upmasked", "a string")
 		err              error
 		number           string
 		messages         []string
@@ -22,6 +22,10 @@ func main() {
 	numbers, err := provider.GetNumbers()
 	if err != nil {
 		fmt.Println("error when getting numbers:", err)
+		return
+	}
+	if len(numbers) == 0 {
+		fmt.Println("error: no numbers were found for " + provider.GetProvider().Name)
 		return
 	}
 
