@@ -2,39 +2,61 @@ package providers
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/upmasked/number-verifier/util"
+	"number-verifier/util"
 	"regexp"
 	"strings"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
+var (
+	countries = []string{"usa", "canada"}
+)
+
+// SMSReceiveFree main
 type SMSReceiveFree struct {
 }
 
-func (p SMSReceiveFree) GetNumbers() ([]string, error) {
+// GetNumbers returns numbers
+func (p SMSReceiveFree) GetNumbers() ([]Number, error) {
 	var (
-		numbers []string
-		r = regexp.MustCompile(`\+([0-9]+)`)
+		numbers []Number
+		err     error
+		r       = regexp.MustCompile(`\+([0-9]+)`)
 	)
 
-	doc, err := util.GetGoQueryDoc(fmt.Sprintf("%s/country/usa", p.GetProvider().BaseURL))
-	if err != nil {
-		return nil, err
+	for _, country := range countries {
+
+		var doc *goquery.Document
+		if doc, err = util.GetGoQueryDoc(fmt.Sprintf("%s/%s", p.GetBaseURL(), country)); err != nil {
+			return nil, err
+		}
+
+		// Cloudflare
+		html, _ := doc.Html()
+		if strings.Contains(html, "Please complete the security check to access") {
+			return nil, fmt.Errorf("got busted by cloudflare, check your cookies")
+		}
+
+		doc.Find("a.numbutton").Each(func(i int, s *goquery.Selection) {
+			var number Number
+			number.PhoneNumber = r.FindStringSubmatch(s.Text())[1]
+			number.Country, _ = util.ParseCountry(country)
+			number.Provider = p.GetName()
+			numbers = append(numbers, number)
+		})
 	}
 
-	doc.Find("a.numbutton").Each(func(i int, s *goquery.Selection) {
-		numbers = append(numbers, r.FindStringSubmatch(s.Text())[1])
-	})
-
-	return numbers, nil
+	return numbers, err
 }
 
+// GetMessages gets messages
 func (p SMSReceiveFree) GetMessages(number string) ([]string, error) {
 	var (
 		messages []string
 	)
 
-	doc, err := util.GetGoQueryDoc(fmt.Sprintf("%s/info/%s", p.GetProvider().BaseURL, number))
+	doc, err := util.GetGoQueryDoc(fmt.Sprintf("%s/info/%s", p.GetBaseURL(), number))
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +69,7 @@ func (p SMSReceiveFree) GetMessages(number string) ([]string, error) {
 			cleanMessage := re.ReplaceAllString(s.Text(), " ")
 			message += strings.TrimSpace(cleanMessage) + " "
 
-			if s.Size() + 1  != i {
+			if s.Size()+1 != i {
 				message += "- "
 			}
 		})
@@ -59,9 +81,17 @@ func (p SMSReceiveFree) GetMessages(number string) ([]string, error) {
 	return messages, nil
 }
 
-func (p SMSReceiveFree) GetProvider() Provider {
-	return Provider{
-		Name: "SMSReceiveFree",
-		BaseURL: "https://smsreceivefree.com",
-	}
+// GetName gets provider name
+func (p SMSReceiveFree) GetName() string {
+	return "smsreceivefree.com"
+}
+
+// GetBaseURL gets baseURL
+func (p SMSReceiveFree) GetBaseURL() string {
+	return "https://smsreceivefree.com/country"
+}
+
+// GetProviders provider
+func (p SMSReceiveFree) GetProviders() Providers {
+	return p
 }

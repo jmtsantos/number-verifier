@@ -5,14 +5,16 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"number-verifier/util"
 	"time"
 )
 
+// Upmasked main
 type Upmasked struct {
 }
 
-
-func (p Upmasked) GetNumbers() ([]string, error) {
+// GetNumbers returns numbers
+func (p Upmasked) GetNumbers() ([]Number, error) {
 	type results []struct {
 		Number    string    `json:"number"`
 		Country   string    `json:"country"`
@@ -20,11 +22,11 @@ func (p Upmasked) GetNumbers() ([]string, error) {
 	}
 
 	var (
-		result results
-		numbers []string
+		result  results
+		numbers []Number
 	)
 
-	resp, err := http.Get(fmt.Sprintf("%s/api/sms/numbers", p.GetProvider().BaseURL))
+	resp, err := http.Get(fmt.Sprintf("%s/api/sms/numbers", p.GetBaseURL()))
 	if err != nil {
 		return numbers, err
 	}
@@ -41,25 +43,30 @@ func (p Upmasked) GetNumbers() ([]string, error) {
 	}
 
 	for _, v := range result {
-		numbers = append(numbers, v.Number)
+		var number Number
+		number.PhoneNumber = v.Number
+		number.Provider = p.GetName()
+		number.Country, _ = util.ParseCountry(v.Country)
+		numbers = append(numbers, number)
 	}
 
 	return numbers, nil
 }
 
+// GetMessages gets messages
 func (p Upmasked) GetMessages(number string) ([]string, error) {
-	type results[] struct {
+	type results []struct {
 		Body       string    `json:"body"`
 		Originator string    `json:"originator"`
 		CreatedAt  time.Time `json:"created_at"`
 	}
 
 	var (
-		result results
+		result   results
 		messages []string
 	)
 
-	resp, err := http.Get(fmt.Sprintf("%s/api/sms/messages/%s", p.GetProvider().BaseURL, number))
+	resp, err := http.Get(fmt.Sprintf("%s/api/sms/messages/%s", p.GetBaseURL(), number))
 	if err != nil {
 		return messages, err
 	}
@@ -76,7 +83,7 @@ func (p Upmasked) GetMessages(number string) ([]string, error) {
 	}
 
 	for _, v := range result {
-		messages = append(messages, v.Originator + " - " + v.Body)
+		messages = append(messages, v.Originator+" - "+v.Body)
 
 		if len(messages) > 5 {
 			break
@@ -86,9 +93,17 @@ func (p Upmasked) GetMessages(number string) ([]string, error) {
 	return messages, nil
 }
 
-func (p Upmasked) GetProvider() Provider {
-	return Provider{
-		Name: "Upmasked",
-		BaseURL: "https://upmasked.com",
-	}
+// GetName gets provider name
+func (p Upmasked) GetName() string {
+	return "upmasked.com"
+}
+
+// GetBaseURL gets baseURL
+func (p Upmasked) GetBaseURL() string {
+	return "https://upmasked.com"
+}
+
+// GetProviders provider
+func (p Upmasked) GetProviders() Providers {
+	return p
 }
