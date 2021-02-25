@@ -1,7 +1,8 @@
 # SMS Number Verifier - Simple, free SMS verification tool
-![number verifier demo](demo.gif)
 
 Number Verifier is a **SMS verification tool** that makes it easy to get a disposable SMS number and bypass SMS number verifications on any site, for example Facebook, Discord, Twitter, Uber, WeChat, Google & more.
+
+This is a fork of the original project developed by [upmasked](upmasked/number-verifier) featuring additional SMS provider support and command line options
 
 - Written in Golang
 - Support for multiple free SMS providers (**PRs are open!**)
@@ -14,23 +15,21 @@ To use this tool first download the [latest release](https://github.com/upmasked
 ## Providers
 We currently support the following providers:
 
-- [smsreceivefree](https://smsreceivefree.com/) - Support for free SMS numbers, currently 14 numbers available from the USA.
-Messages are stored for up to 7 days.
-- [Upmasked](https://upmasked.com/temporary-phone-number/fake-sms) - Support for free SMS numbers, currently 2 numbers available from US & UK. Messages are stored until 50 messages are received.
+- [sms-online.co](https://sms-online.co)
+- [receive-smss.com](https://receive-smss.com)
+- [receive-sms-online/](https://receive-sms-online.info/)
+- [smsreceivefree](https://smsreceivefree.com/)
+- [Upmasked](https://upmasked.com/temporary-phone-number/fake-sms)
 
 ## TODO
 - [ ] Support more free providers
-- [ ] Support paid providers
+- [ ] Add documentation on how to write new provider support modules
 - [ ] Allow easy switching between numbers
 - [ ] Make amount of messsages shown a parameter
 - [ ] Improve message list output
-- [ ] Add native TOR support for SMS providers
 
 ## Disclaimer
 Using this software to violate the terms and conditions of any third-party service is strictly against the intent of this software. By using this software, you are acknowledging this fact and absolving the author or any potential liability or wrongdoing it may cause. This software is meant for testing and experimental purposes only, so please act responsibly.
-
-## Blog posts & articles
-\- none yet -
 
 ## License
 MIT &copy; [Upmasked](https://upmasked.com)
