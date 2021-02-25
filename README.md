@@ -10,7 +10,7 @@ This is a fork of the original project developed by [upmasked](upmasked/number-v
 - Easy switching between providers
 
 ## Usage
-To use this tool first download the [latest release](https://github.com/upmasked/number-verifier/releases/latest). If you're using Windows/Mac (darwin)/Linux, and not sure which one to select, you'll probably want to choose the **'amd64'** (=64-bit) variant. After that, extract the package and run it.
+To use this tool first download the [latest release](https://github.com/jmtsantos/number-verifier/releases/latest). If you're using Windows/Mac (darwin)/Linux, and not sure which one to select, you'll probably want to choose the **'amd64'** (=64-bit) variant. After that, extract the package and run it.
 
 ## Providers
 We currently support the following providers:
